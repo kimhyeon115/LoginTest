@@ -29,6 +29,7 @@ public class WinMemberJoin extends JDialog {
 	private JPasswordField tfPw;
 	private JButton btnJoin;
 	private JLabel lblPw;
+	private JTextField tfCalender;
 
 	/**
 	 * Launch the application.
@@ -92,7 +93,6 @@ public class WinMemberJoin extends JDialog {
 						}
 				}
 			});
-			tfName.setEditable(false);
 			tfName.setColumns(10);
 			tfName.setBounds(154, 98, 152, 21);
 			getContentPane().add(tfName);
@@ -108,7 +108,6 @@ public class WinMemberJoin extends JDialog {
 					}
 				}
 			});
-			tfEmail.setEditable(false);
 			tfEmail.setColumns(10);
 			tfEmail.setBounds(154, 134, 152, 21);
 			getContentPane().add(tfEmail);
@@ -120,7 +119,6 @@ public class WinMemberJoin extends JDialog {
 				public void keyPressed(KeyEvent e) {
 				}
 			});
-			tfMobile.setEditable(false);
 			tfMobile.setColumns(10);
 			tfMobile.setBounds(154, 169, 152, 21);
 			getContentPane().add(tfMobile);
@@ -130,13 +128,12 @@ public class WinMemberJoin extends JDialog {
 		}
 		{
 			btnJoin = new JButton("가입");
-			btnJoin.setEnabled(false);
 			btnJoin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						Class.forName("com.mysql.cj.jdbc.Driver");
 						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sqlDB","root","1234");
-						System.out.println("DB 연결 성공");
+						JOptionPane.showMessageDialog(null, "가입 성공");
 						Statement stmt = con.createStatement();
 						
 						String temp = tfMobile.getText();		// 01011112222 -> 010-1111-2222
@@ -157,7 +154,7 @@ public class WinMemberJoin extends JDialog {
 					}
 				}
 			});
-			btnJoin.setBounds(154, 228, 97, 23);
+			btnJoin.setBounds(154, 248, 97, 23);
 			getContentPane().add(btnJoin);
 		}
 		
@@ -171,7 +168,6 @@ public class WinMemberJoin extends JDialog {
 					}
 			}
 		});
-		tfPw.setEditable(false);
 		tfPw.setEchoChar('*');
 		tfPw.setBounds(154, 62, 152, 21);
 		getContentPane().add(tfPw);
@@ -182,7 +178,6 @@ public class WinMemberJoin extends JDialog {
 					try {
 						Class.forName("com.mysql.cj.jdbc.Driver");
 						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sqlDB","root","1234");
-						System.out.println("DB 연결 성공");
 						
 						String sql = "select id from membertbl where id='" + tfId.getText() + "'";
 						Statement stmt = con.createStatement();
@@ -207,5 +202,27 @@ public class WinMemberJoin extends JDialog {
 			btnDup.setBounds(314, 26, 72, 23);
 			getContentPane().add(btnDup);
 		}
+		
+		JLabel lblBir = new JLabel("birthday:");
+		lblBir.setBounds(52, 208, 57, 15);
+		getContentPane().add(lblBir);
+		
+		tfCalender = new JTextField();
+		tfCalender.setColumns(10);
+		tfCalender.setBounds(154, 208, 152, 21);
+		getContentPane().add(tfCalender);
+		
+		JButton btnCalendar = new JButton("달력...");
+		btnCalendar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WinCalendar winCalendar = new WinCalendar();
+				winCalendar.setModal(true);
+				winCalendar.setVisible(true);
+				
+				tfCalender.setText(winCalendar.getDate());
+			}
+		});
+		btnCalendar.setBounds(314, 207, 72, 23);
+		getContentPane().add(btnCalendar);
 	}
 }
